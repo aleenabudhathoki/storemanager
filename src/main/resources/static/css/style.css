@@ -1,0 +1,89 @@
+:root {
+    --app-navy: #14213d;
+    --app-blue: #2563eb;
+    --app-surface: #ffffff;
+    --app-background: #f5f7fb;
+}
+
+body {
+    background: var(--app-background);
+    color: #1f2937;
+}
+
+.app-navbar {
+    background: var(--app-navy);
+}
+
+.navbar-brand span {
+    color: #60a5fa;
+}
+
+.eyebrow {
+    color: var(--app-blue);
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.stat-card,
+.dashboard-card {
+    background: var(--app-surface);
+    border: 1px solid #e5e7eb;
+    border-radius: .75rem;
+    box-shadow: 0 .25rem 1rem rgba(15, 23, 42, .04);
+}
+
+.stat-card {
+    padding: 1.25rem;
+}
+
+.stat-label {
+    color: #64748b;
+    display: block;
+    font-size: .8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.stat-value {
+    display: block;
+    font-size: 2rem;
+    margin-top: .35rem;
+}
+
+.search-wrapper {
+    max-width: 22rem;
+    width: 100%;
+}
+
+.state-message {
+    color: #475569;
+    padding: 3rem 1rem;
+    text-align: center;
+}
+
+.table thead th {
+    background: #f8fafc;
+    color: #64748b;
+    font-size: .75rem;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.table td,
+.table th {
+    padding: 1rem;
+}
+
+.description-cell {
+    max-width: 16rem;
+    color: #64748b;
+}
+
+@media (max-width: 767.98px) {
+    .table {
+        min-width: 850px;
+    }
+}

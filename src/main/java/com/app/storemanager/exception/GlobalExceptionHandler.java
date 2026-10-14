@@ -5,10 +5,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
@@ -94,6 +96,35 @@ public class GlobalExceptionHandler {
             HttpServletRequest request
     ) {
         return error(HttpStatus.BAD_REQUEST, "Malformed JSON request", request);
+    }
+
+    /**
+     * Handles requests for static resources that are not available.
+     *
+     * @param exception missing-resource exception
+     * @param request current HTTP request
+     * @return a not-found error response
+     */
+    @ExceptionHandler(NoResourceFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleNoResourceFound(NoResourceFoundException exception, HttpServletRequest request) {
+        return error(HttpStatus.NOT_FOUND, "Resource not found", request);
+    }
+
+    /**
+     * Handles requests that use an unsupported HTTP method.
+     *
+     * @param exception unsupported-method exception
+     * @param request current HTTP request
+     * @return a method-not-allowed error response
+     */
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    public ErrorResponse handleMethodNotSupported(
+            HttpRequestMethodNotSupportedException exception,
+            HttpServletRequest request
+    ) {
+        return error(HttpStatus.METHOD_NOT_ALLOWED, "HTTP method not supported for this resource", request);
     }
 
     /**

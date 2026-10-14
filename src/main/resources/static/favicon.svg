@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+    <title>StoreManager</title>
+    <rect width="64" height="64" rx="14" fill="#14213d"/>
+    <path d="M16 18h32v8H16zM20 30h24v18H20z" fill="#60a5fa"/>
+    <path d="M26 30v18M38 30v18" stroke="#14213d" stroke-width="4"/>
+    <path d="M14 18h36" stroke="#f8fafc" stroke-width="4" stroke-linecap="round"/>
+</svg>
