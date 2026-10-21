@@ -1,0 +1,38 @@
+services:
+  mysql:
+    image: mysql:8.0
+
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: storemanager
+      MYSQL_USER: storeapp
+      MYSQL_PASSWORD: ${MYSQL_APP_PASSWORD}
+
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+    healthcheck:
+      test: [ "CMD-SHELL", 'mysqladmin ping -h 127.0.0.1 -u "$$MYSQL_USER" -p"$$MYSQL_PASSWORD" --silent' ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  app:
+    build: .
+    image: storemanager:1.0
+
+    ports:
+      - "127.0.0.1:8080:8080"
+
+    environment:
+      DB_URL: jdbc:mysql://mysql:3306/storemanager
+      DB_USERNAME: storeapp
+      DB_PASSWORD: ${MYSQL_APP_PASSWORD}
+
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+volumes:
+  mysql_data:
