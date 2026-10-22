@@ -59,6 +59,10 @@ jobs:
     needs: build-and-test
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      packages: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -71,3 +75,22 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t storemanager:ci .
+
+      - name: Log in to GitHub Container Registry
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Tag and publish Docker image
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          IMAGE="ghcr.io/${GITHUB_REPOSITORY,,}"
+
+          docker tag storemanager:ci "$IMAGE:latest"
+          docker tag storemanager:ci "$IMAGE:sha-${GITHUB_SHA:0:12}"
+
+          docker push "$IMAGE:latest"
+          docker push "$IMAGE:sha-${GITHUB_SHA:0:12}"
