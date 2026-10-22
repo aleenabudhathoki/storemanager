@@ -47,3 +47,27 @@ jobs:
 
       - name: Build and run tests
         run: ./mvnw clean verify
+
+      - name: Upload Spring Boot JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: storemanager-jar
+          path: target/storemanager-0.0.1-SNAPSHOT.jar
+          if-no-files-found: error
+
+  docker-build:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Download Spring Boot JAR
+        uses: actions/download-artifact@v4
+        with:
+          name: storemanager-jar
+          path: target
+
+      - name: Build Docker image
+        run: docker build -t storemanager:ci .
